@@ -86,9 +86,15 @@ ls ~/tools/klee/include/klee/klee.h
 python3 install_codeql.py
 source ~/.bashrc
 ```
-### Extract dataset
-python3 fetch_cybergym_data.py --repo-dir ./cybergym_data arvo:61337
+### Extract dataset (example)
+Source code:
+```
 python3 extract_from_cybergym.py arvo:62911 libxml2
+```
+Metadata for ground truth:
+```
+python3 fetch_cybergym_data.py --repo-dir ./cybergym_data arvo:61337
+```
 
 ### Download queries
 codeql pack install rules/uaf-pack \
