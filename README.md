@@ -97,9 +97,12 @@ python3 fetch_cybergym_data.py --repo-dir ./cybergym_data arvo:61337
 ```
 
 ### Download queries (example)
+```
 codeql pack install rules/uaf-pack \
   --search-path "/home/shafi/codeql-cli/codeql:/home/shafi/.codeql/packages"
+```
 ### Run CodeQL (example)
+```
 ./01_codeql_scan.sh \
   PROJECT_NAME=libxml2_66502_vul \
   SRC_ROOT=./dataset/66502/libxml2_66502_vul \
@@ -107,7 +110,7 @@ codeql pack install rules/uaf-pack \
   QUERY_SUITES="rules/uaf-pack/suites/uaf.qls" \
   CONTEXT_LINES=5 \
   ALSO_CPP=false
-
+```
 # 1) Specs
 python3 scripts/make_vul_specs.py --findings sa/findings.json --facts sa/fact_pack.json --out out/specs
 
