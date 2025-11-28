@@ -36,7 +36,7 @@ Python dependencies:
 pip install --upgrade openai --break-system-packages
 python3 -m pip install --user requests pyyaml --break-system-packages
 ```
-## Build KLEE:
+### Build KLEE:
 ```
 # Install dependencies
 sudo apt-get update
@@ -86,7 +86,7 @@ ls ~/tools/klee/include/klee/klee.h
 python3 install_codeql.py
 source ~/.bashrc
 ```
-### Extract dataset (example)
+## Extract dataset (example)
 Source code:
 ```
 python3 extract_from_cybergym.py arvo:62911 libxml2
@@ -95,7 +95,7 @@ Metadata for ground truth:
 ```
 python3 fetch_cybergym_data.py --repo-dir ./cybergym_data arvo:61337
 ```
-
+## Stattin Analysis Phase
 ### Download queries (example)
 ```
 codeql pack install rules/uaf-pack \
@@ -111,7 +111,8 @@ codeql pack install rules/uaf-pack \
   CONTEXT_LINES=5 \
   ALSO_CPP=false
 ```
-# 1) Specs
+
+### Extract Vul Specs from CodeQL findings
 python3 scripts/make_vul_specs.py --findings sa/findings.json --facts sa/fact_pack.json --out out/specs
 
 # 2) Seed (driver + seed plan)
