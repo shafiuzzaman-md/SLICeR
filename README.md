@@ -112,66 +112,10 @@ codeql pack install rules/uaf-pack \
   ALSO_CPP=false
 ```
 
-### Extract Vul Specs from CodeQL findings
-python3 scripts/make_vul_specs.py --findings sa/findings.json --facts sa/fact_pack.json --out out/specs
-
-# 2) Seed (driver + seed plan)
-python3 scripts/loopA_build_to_green.py \
-  --spec out/specs/000_dict.c_541_local.oob.memfunc.length-misuse.json \
-  --ccdb sa/compile_commands.json --settings config/settings.yaml
-
-# 3) Enrich plan (fills in_path/helpers/symbolic; normalizes paths)
-python3 scripts/plan_enrich.py \
-  --plan out/plans/plan_dict.c_541.json \
-  --spec out/specs/000_dict.c_541_local.oob.memfunc.length-misuse.json \
-  --facts sa/fact_pack.json --ccdb sa/compile_commands.json \
-  --src-root ../../../dataset/62911/libxml2_62911_vul --rewrite-driver
-
-export DEEPSEEK_API_KEY=""
-
-python3 scripts/synth_stubs.py \
-  --plan out/plans/plan_dict.c_541.json \
-  --spec out/specs/000_dict.c_541_local.oob.memfunc.length-misuse.json \
-  --facts sa/fact_pack.json \
-  --src-root ../../../dataset/62911/libxml2_62911_vul --rewrite-driver\
-  --out out/plans/stub_plan_dict.c_541.json
-
-python3 scripts/make_groom_seed.py \
-  --plan out/plans/plan_dict.c_541.json \
-  --stub-plan out/plans/stub_plan_dict.c_541.json \
-  --out out/groom/groom_seed.json
-
-python3 scripts/llm_synthesize_groom.py   --seed out/groom/groom_seed.json   --out  out/groom/groom_plan.json   --provider openai   --api-base https://api.deepseek.com   --api-key-env DEEPSEEK_API_KEY   --model deepseek-chat   --examples scripts/groom_examples.json
-
-
-python3 scripts/instrument_inpath_and_stub.py \
-  --plan out/plans/plan_dict.c_541.json \
-  --spec out/specs/000_dict.c_541_local.oob.memfunc.length-misuse.json \
-  --src-root ../../../dataset/62911/libxml2_62911_vul \
-  --build-root out/build/instrumented \
-  --stub-plan out/plans/stub_plan_dict.c_541.json \
-  --groom-plan out/groom/groom_plan.json \
-  --emit-groom \
-  --require-llm-groom \
-  --update-plan
-
-# 4) Inject assertions into the *instrumented* file
-python3 scripts/derive_assertion_and_inject.py \
-  --spec out/specs/000_dict.c_541_local.oob.memfunc.length-misuse.json \
-  --plan out/plans/plan_dict.c_541.json \
-  --src-root ../../../dataset/62911/libxml2_62911_vul \
-  --build-root out/build/instrumented \
-  --inplace \
-  --provider deepseek \
-  --api-base https://api.deepseek.com \
-  --model deepseek-chat \
-  --examples scripts/assertion_examples.json \
-  --strict
-
-
-# 5) Build loop (must consume instrumented file from step 4)
-python3 scripts/loopB_run_cegir.py \
-  --plan out/plans/plan_dict.c_541.json \
+## LLM Refinement 
+```
+bash scripts/run_full_cegir_dict.sh
+```
   --ccdb sa/compile_commands.json \
   --build-root out/build
 
