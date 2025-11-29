@@ -116,7 +116,5 @@ codeql pack install rules/uaf-pack \
 ```
 bash scripts/run_full_cegir_dict.sh
 ```
-  --ccdb sa/compile_commands.json \
-  --build-root out/build
 
   
