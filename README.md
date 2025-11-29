@@ -95,7 +95,7 @@ Metadata for ground truth:
 ```
 python3 fetch_cybergym_data.py --repo-dir ./cybergym_data arvo:61337
 ```
-## Stattin Analysis Phase
+## Static Analysis Phase
 ### Download queries (example)
 ```
 codeql pack install rules/uaf-pack \
