@@ -93,7 +93,7 @@ python3 extract_from_cybergym.py arvo:62911 libxml2
 ```
 Metadata for ground truth:
 ```
-python3 fetch_cybergym_data.py --repo-dir ./cybergym_data arvo:61337
+python3 fetch_cybergym_data.py --repo-dir ./cybergym_data arvo:62911
 ```
 ## Static Analysis Phase
 ### Download queries (example)
